@@ -20,4 +20,13 @@ Java 21
 
 ### Installing
 
-To install the Logistic Pickings Algorithm Environment, download the latest release from the release page.
+After cloning the repository, you must download the dependencies using Maven:
+
+```
+mvn clean install
+```
+
+If you are using the IntelliJ IDEA IDE, you can load the dependencies by using the sidebar on the right of the screen.
+Or you can go to the Maven tab and click on the reload button.
+
+After that, you will be able to run the project.
