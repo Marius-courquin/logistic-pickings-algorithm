@@ -13,4 +13,8 @@ public class BoxCapacity {
     public static BoxCapacity of(int weight, int volume, boolean isMixedOrdersAllowed) {
         return new BoxCapacity(weight, volume, isMixedOrdersAllowed);
     }
+
+    public static BoxCapacity of(int weight, int volume) {
+        return new BoxCapacity(weight, volume, false);
+    }
 }

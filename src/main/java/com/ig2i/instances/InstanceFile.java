@@ -19,7 +19,7 @@ public enum InstanceFile {
 
     private static final String PATH = "src/main/resources/instances/";
 
-    public String getFilePath() {
+    public String getPath() {
         return PATH + fileName + ".txt";
     }
 }
