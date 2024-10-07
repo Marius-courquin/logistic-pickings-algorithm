@@ -261,7 +261,7 @@ public class InstanceReader {
             for (int i = 3; i < parts.length; i += 2) {
                 var product = instance.getProductById(Integer.parseInt(parts[i]));
                 var quantity = Integer.parseInt(parts[i + 1]);
-                var article = Article.of(quantity, product);
+                var article = Article.of(quantity, product, id);
                 order.addArticle(article);
             }
             return order;

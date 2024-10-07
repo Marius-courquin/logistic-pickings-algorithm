@@ -79,4 +79,8 @@ public class Instance {
     public Product getProductById(int id) {
         return products.stream().filter(product -> product.getId() == id).findFirst().orElse(null);
     }
+
+    public Order getOrderById(int id) {
+        return orders.stream().filter(order -> order.getId() == id).findFirst().orElse(null);
+    }
 }
