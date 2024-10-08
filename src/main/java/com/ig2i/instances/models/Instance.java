@@ -1,15 +1,16 @@
 package com.ig2i.instances.models;
 
+import com.ig2i.instances.InstanceFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Instance {
     private int numberOfLocations;
     private int numberOfProducts;
@@ -29,11 +30,13 @@ public class Instance {
     private List<ShortestPath> shortestPaths = new ArrayList<>();
     private List<Arc> arcs = new ArrayList<>();
 
+    private final InstanceFile instanceFile;
+
     public static Instance of(int numberOfLocations, int numberOfProducts, int numberOfBoxesTrolley,
                               int numberOfDimensionsCapacity, int numberOfOrders, int numberOfBoxesOrder,
                               int numberOfVerticesIntersections, int departingDepot, int arrivingDepot,
                               BoxCapacity boxCapacity, List<Order> orders, List<Location> locations,
-                              List<Product> products, List<ShortestPath> shortestPaths, List<Arc> arcs) {
+                              List<Product> products, List<ShortestPath> shortestPaths, List<Arc> arcs, InstanceFile instanceFile) {
         return new Instance(
                 numberOfLocations,
                 numberOfProducts,
@@ -49,7 +52,9 @@ public class Instance {
                 locations,
                 products,
                 shortestPaths,
-                arcs);
+                arcs,
+                instanceFile
+        );
     }
 
     public void addLocation(Location location) {

@@ -10,7 +10,7 @@ public class InstanceReader {
 
     public Instance readInstance(InstanceFile instanceFile) throws IOException {
         var path = instanceFile.getPath();
-        var instance = new Instance();
+        var instance = new Instance(instanceFile);
 
         readLocations(instance, path);
 
