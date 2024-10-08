@@ -15,4 +15,12 @@ public class Product {
         return new Product(id, weight, volume, location);
     }
 
+    @Override
+    public String toString() {
+        return "Product: " +
+                "ID: " + id +
+                ", Weight: " + weight +
+                ", Volume: " + volume +
+                ", Location: [" + (location != null ? location.toString() : "No location") + "]\n";
+    }
 }

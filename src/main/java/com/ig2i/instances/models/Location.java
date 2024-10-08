@@ -14,4 +14,13 @@ public class Location {
     public static Location of(int id, int longitude, int latitude, String name) {
         return new Location(id, longitude, latitude, name);
     }
+
+    @Override
+    public String toString() {
+        return "Location: " +
+                "ID: " + id +
+                ", Name: '" + name + '\'' +
+                ", Longitude: " + longitude +
+                ", Latitude: " + latitude;
+    }
 }
