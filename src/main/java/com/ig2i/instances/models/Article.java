@@ -19,4 +19,16 @@ public class Article {
     public static Article of(int quantity, Product product, int orderId) {
         return new Article(quantity, product, orderId);
     }
+
+    public String getNameOfProductLocation(){
+        return this.product.getLocation().getName();
+    }
+
+    @Override
+    public String toString() {
+        return "\n  Article: " +
+                "Quantity: " + quantity +
+                ", Product: [" + (product != null ? product.toString() : "No product") + "]" +
+                ", Order ID: " + orderId;
+    }
 }
