@@ -1,4 +1,4 @@
-package com.ig2i.algorithms;
+package com.ig2i.algorithms.models;
 
 import com.ig2i.instances.models.Instance;
 import lombok.AllArgsConstructor;
@@ -7,5 +7,5 @@ import lombok.AllArgsConstructor;
 public abstract class BaseAlgorithm {
     protected Instance instance;
 
-    abstract void algorithm();
+    protected abstract void algorithm();
 }

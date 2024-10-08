@@ -1,5 +1,6 @@
 package com.ig2i.algorithms;
 
+import com.ig2i.algorithms.models.BaseAlgorithm;
 import com.ig2i.instances.models.Article;
 import com.ig2i.instances.models.Instance;
 import com.ig2i.instances.models.Order;
