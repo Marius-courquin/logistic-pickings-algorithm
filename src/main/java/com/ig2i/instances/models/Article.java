@@ -24,6 +24,14 @@ public class Article {
         return this.product.getLocation().getName();
     }
 
+    public int getWeight(){
+        return this.quantity * this.product.getWeight();
+    }
+
+    public int getVolume(){
+        return this.quantity * this.product.getVolume();
+    }
+
     @Override
     public String toString() {
         return "\n  Article: " +

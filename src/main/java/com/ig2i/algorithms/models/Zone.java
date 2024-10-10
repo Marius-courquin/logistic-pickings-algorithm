@@ -1,5 +1,6 @@
-package com.ig2i.instances.models;
+package com.ig2i.algorithms.models;
 
+import com.ig2i.instances.models.Article;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

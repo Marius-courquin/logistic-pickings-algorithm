@@ -11,14 +11,15 @@ import java.io.IOException;
 
 public class SolutionWriter {
 
-    private int currentParcelId = 0;
+    private int currentParcelId;
 
     private static final String PATH = "src/main/resources/solutions/";
     private static final String SUFFIX = "_sol.txt";
 
     public void writeSolution(Solution solution) throws IOException {
-            var file = new File(PATH + solution.getInstanceFile() + SUFFIX);
+            var file = new File(PATH + solution.getInstanceFile().getFileName() + SUFFIX);
             var writer = new FileWriter(file);
+            this.currentParcelId = 0;
 
             writeNbTour(solution, writer);
 
@@ -28,7 +29,7 @@ public class SolutionWriter {
     }
 
     private void writeNbTour(Solution solution, FileWriter fileWriter) throws IOException {
-            fileWriter.write(SolutionFileDelimiter.NB_TOUR.toString());
+            fileWriter.write(SolutionFileDelimiter.NB_TOUR.getDelimiter() + "\n");
             fileWriter.write(solution.getTourCount() + "\n");
     }
 
@@ -42,13 +43,13 @@ public class SolutionWriter {
     }
 
     private void writeTourNbParcels(Tour tour, int tourId, FileWriter fileWriter) throws IOException {
-        fileWriter.write(SolutionFileDelimiter.TOUR_NB_PARCELS + "\n");
+        fileWriter.write(SolutionFileDelimiter.TOUR_NB_PARCELS.getDelimiter() + "\n");
         fileWriter.write(tourId + " " + tour.getParcelCount() + "\n");
     }
 
     private void writeTourParcels(Tour tour, FileWriter fileWriter) throws IOException {
-        fileWriter.write(SolutionFileDelimiter.TOUR_PARCELS + "\n");
-        for (Parcel parcel : tour.getParcel()) {
+        fileWriter.write(SolutionFileDelimiter.TOUR_PARCELS.getDelimiter() + "\n");
+        for (Parcel parcel : tour.getParcels()) {
             writeParcel(parcel, fileWriter);
         }
     }

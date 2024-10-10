@@ -11,9 +11,18 @@ import java.util.List;
 @AllArgsConstructor
 public class Solution {
     private InstanceFile instanceFile;
-    private List<Tour> tour = new ArrayList<>();
+    private List<Tour> tour;
 
-    void addTour(Tour tour) {
+    public Solution(InstanceFile instanceFile) {
+        this.instanceFile = instanceFile;
+        this.tour = new ArrayList<>();
+    }
+
+    public static Solution of(InstanceFile instanceFile, List<Tour> tour) {
+        return new Solution(instanceFile, tour);
+    }
+
+    public void addTour(Tour tour) {
         this.tour.add(tour);
     }
 
@@ -25,7 +34,23 @@ public class Solution {
         return this.tour.get(index);
     }
 
-    public static Solution of(InstanceFile instanceFile, List<Tour> tour) {
-        return new Solution(instanceFile, tour);
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Solution{");
+        sb.append("instanceFile=").append(instanceFile);
+        sb.append(", tours=[");
+
+        for (Tour tour : tour) {
+            sb.append(tour.toString()).append(", ");
+        }
+
+        if (!tour.isEmpty()) {
+            sb.setLength(sb.length() - 2);
+        }
+        sb.append("]");
+        sb.append("}");
+
+        return sb.toString();
     }
 }

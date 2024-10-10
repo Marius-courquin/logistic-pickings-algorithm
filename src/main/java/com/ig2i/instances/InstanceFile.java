@@ -1,7 +1,9 @@
 package com.ig2i.instances;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum InstanceFile {
     INSTANCE_01("instance_0116_131933_Z1"),
