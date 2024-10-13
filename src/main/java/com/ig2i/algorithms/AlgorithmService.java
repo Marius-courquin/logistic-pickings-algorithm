@@ -23,6 +23,10 @@ public class AlgorithmService {
         return solutions;
     }
 
+    public Solution getSolution(Instance instance) {
+        return safeAlgorithm(instance);
+    }
+
     @SneakyThrows
     private Solution safeAlgorithm(Instance instance) {
         return algorithm.algorithm(instance);

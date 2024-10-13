@@ -22,6 +22,10 @@ public class InstanceService {
         return instances;
     }
 
+    public Instance getInstance(InstanceFile instanceFile) {
+        return safeReadInstance(instanceFile);
+    }
+
     @SneakyThrows
     private Instance safeReadInstance(InstanceFile instanceFile) {
         return instanceReader.readInstance(instanceFile);
