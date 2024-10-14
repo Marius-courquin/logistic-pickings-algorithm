@@ -1,6 +1,7 @@
 package com.ig2i.instances;
 
 import com.ig2i.instances.models.Instance;
+import com.ig2i.utils.Loader;
 import lombok.SneakyThrows;
 
 import java.util.Arrays;
@@ -17,7 +18,12 @@ public class InstanceService {
     public List<Instance> getAllInstances() {
         var instanceFiles = InstanceFile.values();
 
-        var instances = Arrays.stream(instanceFiles).map(this::safeReadInstance).toList();
+        var loader = new Loader("reading instances", instanceFiles.length);
+
+        var instances = Arrays.stream(instanceFiles).map( instanceFile -> {
+            loader.update();
+            return getInstance(instanceFile);
+        }).toList();
 
         return instances;
     }

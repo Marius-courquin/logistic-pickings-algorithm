@@ -15,10 +15,14 @@ public class MainForAllInstances {
         var algorithmService = new AlgorithmService(currentAlgorithmUsed);
         var solutionService = new SolutionService();
 
+        System.out.println("Starting process for all instances...");
+
         var instances = instanceService.getAllInstances();
 
         var solutions = algorithmService.getAllSolutions(instances);
 
         solutionService.writeAllSolutions(solutions);
+
+        System.out.println("Process finished successfully!");
     }
 }

@@ -4,6 +4,7 @@ package com.ig2i.algorithms;
 import com.ig2i.algorithms.models.Algorithm;
 import com.ig2i.instances.models.Instance;
 import com.ig2i.solutions.models.Solution;
+import com.ig2i.utils.Loader;
 import lombok.SneakyThrows;
 
 import java.util.List;
@@ -18,7 +19,12 @@ public class AlgorithmService {
 
     public List<Solution> getAllSolutions(List<Instance> instances) {
 
-        var solutions = instances.stream().map(this::safeAlgorithm).toList();
+        var loader = new Loader("running algorithm", instances.size());
+
+        var solutions = instances.stream().map( instance -> {
+            loader.update();
+            return safeAlgorithm(instance);
+        }).toList();
 
         return solutions;
     }
