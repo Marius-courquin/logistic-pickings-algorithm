@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 The following software is required to run the Logistic Pickings Algorithm Environment:
 
 ```
-Java 21
+Java 22
 ```
 
 ### Installing
