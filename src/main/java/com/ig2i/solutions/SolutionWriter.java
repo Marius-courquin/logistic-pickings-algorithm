@@ -17,6 +17,12 @@ public class SolutionWriter {
     private static final String SUFFIX = "_sol.txt";
 
     public void writeSolution(Solution solution) throws IOException {
+            File directory = new File(PATH);
+
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
             var file = new File(PATH + solution.getInstanceFile().getFileName() + SUFFIX);
             var writer = new FileWriter(file);
             this.currentParcelId = 0;
