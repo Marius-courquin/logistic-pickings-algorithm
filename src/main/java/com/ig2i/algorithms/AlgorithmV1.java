@@ -31,22 +31,22 @@ public class AlgorithmV1 implements Algorithm {
 
     private void processOrders(Instance instance, List<Zone> zones) {
         for (Order order : instance.getOrders()) {
-            processArticlesForOrder(zones, order);
+            processArticlesForOrder(instance, zones, order);
         }
     }
 
-    private void processArticlesForOrder(List<Zone> zones, Order order) {
+    private void processArticlesForOrder(Instance instance, List<Zone> zones, Order order) {
         for (Article article : order.getArticles()) {
-            setArticleInZone(zones, article);
+            setArticleInZone(instance, zones, article);
         }
     }
 
-    private void setArticleInZone(List<Zone> zones, Article article){
+    private void setArticleInZone(Instance instance, List<Zone> zones, Article article){
         boolean existingZone = false;
 
         for (Zone zone : zones) {
             if (article.getNameOfProductLocation().substring(1, 6).equals(zone.getName())) {
-                zone.addArticle(article);
+                addListOfArticleInZone(instance, zone, article);
                 existingZone = true;
                 break;
             }
@@ -54,9 +54,37 @@ public class AlgorithmV1 implements Algorithm {
 
         if(!existingZone){
             Zone zone = new Zone(article.getNameOfProductLocation().substring(1, 6));
-            zone.addArticle(article);
+            addListOfArticleInZone(instance, zone, article);
             zones.add(zone);
         }
+    }
+
+    private void addListOfArticleInZone(Instance instance, Zone zone, Article article){
+        List<Article> articles = splitArticleIfTooHeavy(instance, article);
+
+        for(Article art: articles){
+            zone.addArticle(art);
+        }
+    }
+
+    private List<Article> splitArticleIfTooHeavy(Instance instance, Article article){
+        List<Article> articles = new ArrayList<>();
+        int remainingQuantity = article.getQuantity();
+
+        int nbArticlePossibleInOneBoxByWeight = instance.getBoxCapacity().getWeightMax() / article.getProduct().getWeight();
+        int nbArticlePossibleInOneBoxByVolume = instance.getBoxCapacity().getVolumeMax() / article.getProduct().getVolume();
+
+        int quantityToAdd = Math.min(nbArticlePossibleInOneBoxByWeight, nbArticlePossibleInOneBoxByVolume);
+
+        while (remainingQuantity > 0) {
+            int currentQuantity = Math.min(quantityToAdd, remainingQuantity);
+            Article newArticle = Article.of(currentQuantity, article.getProduct(), article.getOrderId());
+            articles.add(newArticle);
+
+            remainingQuantity -= currentQuantity;
+        }
+
+        return articles;
     }
 
     private void sortZonesByName(List<Zone> zones) {
