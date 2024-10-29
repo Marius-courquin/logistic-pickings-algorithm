@@ -97,14 +97,14 @@ public class AlgorithmV3 implements Algorithm {
 
         for(Zone zone: zones){
             for(Article article: zone.getArticles()) {
-                addArticleToSolution(solution, instance, article);
+                addArticleToSolution(solution, instance, zones, article);
             }
         }
     }
 
-    private void addArticleToSolution(Solution solution, Instance instance, Article article){
+    private void addArticleToSolution(Solution solution, Instance instance, List<Zone> zones, Article article){
         for(Tour tour: solution.getTour()){
-            if (findAndAddArticleToParcel(tour, article)) {
+            if (findAndAddArticleToParcel(tour, zones, article)) {
                 return;
             }
 
@@ -117,13 +117,32 @@ public class AlgorithmV3 implements Algorithm {
         createNewTourWithParcel(solution, instance, article);
     }
 
-    private boolean findAndAddArticleToParcel(Tour tour, Article article) {
+    private boolean findAndAddArticleToParcel(Tour tour,List<Zone> zones, Article article) {
         for (Parcel parcel : tour.getParcels()) {
-            if (parcel.getOrderId() == article.getOrderId() && parcel.addArticle(article)) {
+            if (parcel.getOrderId() == article.getOrderId()
+                    && articleIsNearLastArticleInParcel(zones, article, parcel.getArticles().getLast())
+                    && parcel.addArticle(article)) {
                 return true;
             }
         }
         return false;
+    }
+
+    private boolean articleIsNearLastArticleInParcel(List<Zone> zones, Article article, Article lastArticle){
+        int indexArticle = getZoneIndexOfArticle(zones, article);
+        int indexLastArticle = getZoneIndexOfArticle(zones, lastArticle);
+
+        return indexArticle - indexLastArticle <= 7;
+    }
+
+    private int getZoneIndexOfArticle(List<Zone> zones, Article article) {
+        for(int i = 0; i < zones.size(); i++){
+            if(zones.get(i).getArticles().contains(article)){
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     private void createNewParcelForTour(Instance instance, Tour tour, Article article) {
