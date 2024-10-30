@@ -1,6 +1,7 @@
 package com.ig2i.algorithms;
 
 import com.ig2i.algorithms.models.Algorithm;
+import com.ig2i.algorithms.models.ParcelNumberTrackerByOrder;
 import com.ig2i.instances.models.Article;
 import com.ig2i.instances.models.Instance;
 import com.ig2i.instances.models.Order;
@@ -15,8 +16,12 @@ import java.util.List;
 
 public class AlgorithmV3 implements Algorithm {
 
+    private final List<ParcelNumberTrackerByOrder> parcelsNumberTrackerByOrder = new ArrayList<>();
+
     @Override
     public Solution algorithm(Instance instance) {
+        parcelsNumberTrackerByOrder.clear();
+
         var solution = new Solution(instance.getInstanceFile());
         var zones = new ArrayList<Zone>();
 
@@ -129,10 +134,16 @@ public class AlgorithmV3 implements Algorithm {
     }
 
     private boolean articleIsNearLastArticleInParcel(List<Zone> zones, Article article, Article lastArticle){
+        if(!isEligibleForAnotherParcel(article.getOrderId())){
+            return true;
+        }
+
+        int nbMaxZonesGapAcceptable = 7; //Can be modified to change the number of zones gap acceptable between two articles of the same order
+
         int indexArticle = getZoneIndexOfArticle(zones, article);
         int indexLastArticle = getZoneIndexOfArticle(zones, lastArticle);
 
-        return indexArticle - indexLastArticle <= 7;
+        return indexArticle - indexLastArticle <= nbMaxZonesGapAcceptable;
     }
 
     private int getZoneIndexOfArticle(List<Zone> zones, Article article) {
@@ -151,6 +162,10 @@ public class AlgorithmV3 implements Algorithm {
     }
 
     private Parcel createParcelAndAddArticle(Instance instance, Article article) {
+        Order foundOrder = findOrderById(instance, article.getOrderId());
+
+        trackParcel(article.getOrderId(), foundOrder.getNumberMaxOfBoxes());
+
         Parcel parcel = new Parcel(article.getOrderId(), instance.getBoxCapacity());
         parcel.addArticle(article);
         return parcel;
@@ -160,5 +175,36 @@ public class AlgorithmV3 implements Algorithm {
         Tour tour = new Tour();
         createNewParcelForTour(instance, tour, article);
         solution.addTour(tour);
+    }
+
+    public void trackParcel(int orderId, int numberMaxOfBoxes) {
+        for (ParcelNumberTrackerByOrder tracker : parcelsNumberTrackerByOrder) {
+            if (tracker.getOrderId() == orderId) {
+                tracker.incrementNumberOfParcels();
+                return;
+            }
+        }
+
+        ParcelNumberTrackerByOrder newTracker = new ParcelNumberTrackerByOrder(orderId, numberMaxOfBoxes);
+        newTracker.incrementNumberOfParcels();
+        parcelsNumberTrackerByOrder.add(newTracker);
+    }
+
+    private Order findOrderById(Instance instance, int orderId) {
+        return instance.getOrders()
+                .stream()
+                .filter(order -> order.getId() == orderId)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Order not found for ID: " + orderId));
+    }
+
+    private boolean isEligibleForAnotherParcel(int orderId){
+        for (ParcelNumberTrackerByOrder tracker : parcelsNumberTrackerByOrder) {
+            if (tracker.getOrderId() == orderId) {
+                return tracker.canDoAnotherParcel();
+            }
+        }
+
+        return false;
     }
 }
